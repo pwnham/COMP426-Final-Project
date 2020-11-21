@@ -8,7 +8,7 @@ export default class Home extends Component {
         <section>
           <div>
             <div>
-              <h1>Welcome to FrideShare</h1>
+              <h1>Welcome to FridgeShare</h1>
               <p>A Collaborative Fridge Tool</p>
               <div>
                 <Link to="/signup">Create New Account</Link>

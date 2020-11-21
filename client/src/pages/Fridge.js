@@ -1,6 +1,13 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Accordion, Card, ListGroup, Button } from "react-bootstrap";
+import {
+  Accordion,
+  Card,
+  ListGroup,
+  Button,
+  Modal,
+  Form,
+} from "react-bootstrap";
 import { signout } from "../helpers/auth";
 import { db } from "../services/firebase";
 
@@ -21,6 +28,8 @@ export default class Fridge extends Component {
     super(props);
     this.state = {
       members: [],
+      showModal: false,
+      modalName: "",
     };
     this.signOutUser = this.signOutUser.bind(this);
   }
@@ -94,7 +103,7 @@ export default class Fridge extends Component {
     console.log(this.state.members);
 
     const i = this.state.members.findIndex(
-      (element) => element.name == user.name
+      (element) => element.name === user.name
     );
 
     const m = this.state.members;
@@ -102,26 +111,37 @@ export default class Fridge extends Component {
     this.setState({ members: m });
   }
 
+  async updateFirebaseDoc() {
+    db.ref("groups/admins").update({
+      members: this.state.members,
+    });
+  }
+
   foodListToUI(user) {
-    const uiList = [];
+    if (user.foods) {
+      const uiList = [];
 
-    const foods = user.foods;
-    for (const [index, value] of foods.entries()) {
-      uiList.push(
-        <ListGroup.Item>
-          {value}{" "}
-          <Button
-            variant="danger"
-            className="float-right"
-            onClick={() => this.handleDeleteFood(value, user)}
-          >
-            delete
-          </Button>
-        </ListGroup.Item>
-      );
+      const foods = user.foods;
+      for (const [index, value] of foods.entries()) {
+        uiList.push(
+          <ListGroup.Item>
+            {value}{" "}
+            <Button
+              variant="danger"
+              className="float-right"
+              onClick={() => this.handleDeleteFood(value, user)}
+            >
+              delete
+            </Button>
+          </ListGroup.Item>
+        );
+      }
+
+      this.updateFirebaseDoc();
+      return uiList;
+    } else {
+      return <p>This person has no food D:</p>;
     }
-
-    return uiList;
   }
 
   async getFoods() {
@@ -139,14 +159,63 @@ export default class Fridge extends Component {
     this.setState({ members: members });
   }
 
+  renderModal() {
+    return (
+      <>
+        <Modal
+          show={this.state.showModal}
+          onHide={() => this.setState({ showModal: false })}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Add Food for {this.state.modalName}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group controlId="forFoodName">
+                <Form.Label>What food are you adding</Form.Label>
+                <Form.Control type="foodName" placeholder="Enter food" />
+              </Form.Group>
+              <Button
+                variant="secondary"
+                onClick={() => this.setState({ showModal: false })}
+              >
+                Close
+              </Button>
+              <Button
+                variant="primary"
+                type="submit"
+                onClick={(e) => {
+                  e.preventDefault();
+                  this.setState({ showModal: false });
+                }}
+              >
+                Add Food
+              </Button>
+            </Form>
+          </Modal.Body>
+        </Modal>
+      </>
+    );
+  }
+
   createUIForGroup() {
     const cards = [];
     const members = this.state.members;
     for (var i = 0; i < members.length; i++) {
+      const name = members[i].name;
       cards.push(
         <Card>
           <Accordion.Toggle as={Card.Header} eventKey={i + 1}>
-            {members[i].name}'s Food
+            {name}'s Food
+            <Button
+              variant="success"
+              className="float-right"
+              onClick={() => {
+                this.setState({ showModal: true, modalName: name });
+              }}
+            >
+              Add Food
+            </Button>
           </Accordion.Toggle>
           <Accordion.Collapse eventKey={i + 1}>
             <Card.Body>
@@ -169,7 +238,47 @@ export default class Fridge extends Component {
         <button onClick={this.signOutUser} type="button">
           Log Out?
         </button>
+        {this.renderModal()}
       </div>
+    );
+  }
+}
+
+class AddFoodModal extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      show: true,
+    };
+  }
+
+  render() {
+    return (
+      <>
+        <Modal
+          show={this.state.show}
+          onHide={() => this.setState({ show: false })}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Modal heading</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+          <Modal.Footer>
+            <Button
+              variant="secondary"
+              onClick={() => this.setState({ show: false })}
+            >
+              Close
+            </Button>
+            <Button
+              variant="primary"
+              onClick={() => this.setState({ show: false })}
+            >
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
     );
   }
 }
