@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {
   Accordion,
@@ -11,18 +11,6 @@ import {
 import { signout } from "../helpers/auth";
 import { db } from "../services/firebase";
 
-class Ingredient extends React.Component {
-  render() {
-    return (
-      <div class="ingredient">
-        <p>{this.props.name}</p>
-        <p>{"Pay " + this.props.purchaser + " $" + this.props.price}</p>
-        <p>{"Expiration Date: " + this.props.expiration}</p>
-      </div>
-    );
-  }
-}
-
 export default class Fridge extends Component {
   constructor(props) {
     super(props);
@@ -30,6 +18,7 @@ export default class Fridge extends Component {
       members: [],
       showModal: false,
       modalName: "",
+      addedFood: "",
     };
     this.signOutUser = this.signOutUser.bind(this);
   }
@@ -37,56 +26,6 @@ export default class Fridge extends Component {
   componentDidMount() {
     this.getFoods();
   }
-
-  // createIngredient() {
-  //   return (
-  //     <Container>
-  //       <Columns>
-  //         <Columns.Column>
-  //           <p className="has-text-left">pizza</p>
-  //         </Columns.Column>
-  //         <Columns.Column>
-  //           <p className="has-text-centered">Pay 10 to Jag</p>
-  //         </Columns.Column>
-  //         <Columns.Column>
-  //           <p className="has-text-right">Expires: 10/18/2020</p>
-  //         </Columns.Column>
-  //       </Columns>
-  //     </Container>
-  //   );
-  // }
-
-  // createList() {
-  //   return (
-  //     <Container>
-  //       <List>
-  //         <List.Item>{this.createIngredient()}</List.Item>
-  //         <List.Item>{this.createIngredient()}</List.Item>
-  //         <List.Item>{this.createIngredient()}</List.Item>
-  //         <List.Item>{this.createIngredient()}</List.Item>
-  //       </List>
-  //     </Container>
-  //   );
-  // }
-
-  // _showMessage = (bool) => {
-  //   this.setState({
-  //     showMessage: bool,
-  //   });
-  // };
-
-  // handleClick() {
-  //   {
-  //     this._showMessage.bind(null, true);
-  //     console.log(this.state.showMessage);
-  //   }
-  // }
-
-  // createUser() {
-  //   return (
-  //     <Button onClick={() => this.handleClick()}>this will be clicked</Button>
-  //   );
-  // }
 
   async signOutUser(event) {
     event.preventDefault();
@@ -109,12 +48,29 @@ export default class Fridge extends Component {
     const m = this.state.members;
     m[i].foods.splice(m[i].foods.indexOf(food), 1);
     this.setState({ members: m });
+    this.updateFirebaseDoc();
   }
 
   async updateFirebaseDoc() {
     db.ref("groups/admins").update({
       members: this.state.members,
     });
+  }
+
+  handleAddFood() {
+    const i = this.state.members.findIndex(
+      (element) => element.name === this.state.modalName
+    );
+
+    const m = this.state.members;
+    if (m[i].foods) {
+      m[i].foods.push(this.state.addedFood);
+    } else {
+      m[i].foods = [this.state.addedFood];
+    }
+
+    this.setState({ members: m });
+    this.updateFirebaseDoc();
   }
 
   foodListToUI(user) {
@@ -137,7 +93,6 @@ export default class Fridge extends Component {
         );
       }
 
-      this.updateFirebaseDoc();
       return uiList;
     } else {
       return <p>This person has no food D:</p>;
@@ -173,7 +128,11 @@ export default class Fridge extends Component {
             <Form>
               <Form.Group controlId="forFoodName">
                 <Form.Label>What food are you adding</Form.Label>
-                <Form.Control type="foodName" placeholder="Enter food" />
+                <Form.Control
+                  type="foodName"
+                  placeholder="Enter food"
+                  onChange={(e) => this.setState({ addedFood: e.target.value })}
+                />
               </Form.Group>
               <Button
                 variant="secondary"
@@ -187,6 +146,7 @@ export default class Fridge extends Component {
                 onClick={(e) => {
                   e.preventDefault();
                   this.setState({ showModal: false });
+                  this.handleAddFood();
                 }}
               >
                 Add Food
@@ -240,45 +200,6 @@ export default class Fridge extends Component {
         </button>
         {this.renderModal()}
       </div>
-    );
-  }
-}
-
-class AddFoodModal extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      show: true,
-    };
-  }
-
-  render() {
-    return (
-      <>
-        <Modal
-          show={this.state.show}
-          onHide={() => this.setState({ show: false })}
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-          <Modal.Footer>
-            <Button
-              variant="secondary"
-              onClick={() => this.setState({ show: false })}
-            >
-              Close
-            </Button>
-            <Button
-              variant="primary"
-              onClick={() => this.setState({ show: false })}
-            >
-              Save Changes
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </>
     );
   }
 }
