@@ -9,7 +9,9 @@ import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Fridge from "./pages/Fridge";
+import Finances from "./pages/Finances";
 import { auth } from "./services/firebase";
+//import 'react-bulma-components/basic/react-bulma-components.min.css';
 import "./styles.css";
 
 function PrivateRoute({ component: Component, authenticated, ...rest }) {
@@ -80,6 +82,11 @@ class App extends Component {
             path="/fridge"
             authenticated={this.state.authenticated}
             component={Fridge}
+          ></PrivateRoute>
+          <PrivateRoute
+            path="/finances"
+            authenticated={this.state.authenticated}
+            component={Finances}
           ></PrivateRoute>
           <PublicRoute
             path="/signup"

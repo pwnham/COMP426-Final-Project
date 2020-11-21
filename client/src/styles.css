@@ -4,3 +4,32 @@ body {
   font-family: "Poppins", sans-serif;
   background-color: #fcfcfc;
 }
+
+.finances {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-bottom: 2rem;
+}
+
+.paymentsRoot, .requestsRoot {
+  display: flex;
+  flex-direction: column;
+}
+
+.paymentContainer, .requestContainer {
+
+  margin: .3rem;
+  padding: .5rem;
+  display: flex;
+  flex-direction: column;
+
+  border-color: blue;
+  border-style: ridge;
+}
+
+.paidCheckbox {
+  /* align-self: center; */
+}
+
+
