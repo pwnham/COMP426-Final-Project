@@ -49,69 +49,115 @@ export default class SignUp extends Component {
 
   render() {
     return (
-      <div>
-        <h1>
-          Sign Up to
-          <Link to="/">FridgeShare</Link>
-        </h1>
-        <p>Fill in the form below to create your account.</p>
-        <Form>
-          <Form.Group controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control
-              name="email"
-              type="email"
-              placeholder="Enter email"
-              onChange={this.handleChange}
-            />
-          </Form.Group>
+      <>
+        <style type="text/css">{`
 
-          <Form.Group controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              name="password"
-              type="password"
-              placeholder="Enter Password"
-              onChange={this.handleChange}
-            />
-          </Form.Group>
+body {
+  background-color: #fcf8eb;
+}
 
-          <Form.Group controlId="formBasicName">
-            <Form.Label>First Name</Form.Label>
-            <Form.Control
-              name="name"
-              type="name"
-              placeholder="Enter Name"
-              onChange={this.handleChange}
-            />
-          </Form.Group>
+.signuppage{
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-image: linear-gradient(#ffe25e, #fcebbb);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
-          <Form.Group controlId="formBasicGroupName">
-            <Form.Label>
-              Enter the name of the group you would like to join!
-            </Form.Label>
-            <Form.Control
-              name="groupName"
-              type="groupName"
-              placeholder="Enter Group Name"
-              onChange={this.handleChange}
-            />
-            <Form.Text className="text-muted">
-              Ensure that this name is correct!
-            </Form.Text>
-          </Form.Group>
-          {this.state.error ? <p>{this.state.error}</p> : null}
+.signupsection{
+  width: 700px;
+  min-height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  background-color: #faf0cf;
+  padding: 20px;
+  border-color: gray;
+  border-width: 5px;
+  border-style: solid;
+  border-radius: 10px;
+}
 
-          <Button variant="primary" type="submit" onClick={this.handleSubmit}>
-            Sign Up
-          </Button>
-        </Form>
-        <hr />
-        <p>
-          Already have an account? <Link to="/login">Log In</Link>
-        </p>
-        {/* </form> */}
-      </div>
+.center{
+  text-align: center;
+}
+         
+         `}</style>
+        <div class="signuppage">
+          <section class="signupsection">
+            <h1 class="center">
+              Sign Up to <Link to="/">FridgeShare</Link>
+            </h1>
+            <br></br>
+            <p>Fill in the form below to create your account.</p>
+            <Form>
+              <Form.Group controlId="formBasicEmail">
+                <Form.Label>Email address</Form.Label>
+                <Form.Control
+                  name="email"
+                  type="email"
+                  placeholder="Enter email"
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+
+              <Form.Group controlId="formBasicPassword">
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  name="password"
+                  type="password"
+                  placeholder="Enter Password"
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+
+              <Form.Group controlId="formBasicName">
+                <Form.Label>First Name</Form.Label>
+                <Form.Control
+                  name="name"
+                  type="name"
+                  placeholder="Enter Name"
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+
+              <Form.Group controlId="formBasicGroupName">
+                <Form.Label>
+                  Enter the name of the group you would like to join!
+                </Form.Label>
+                <Form.Control
+                  name="groupName"
+                  type="groupName"
+                  placeholder="Enter Group Name"
+                  onChange={this.handleChange}
+                />
+                <Form.Text className="text-muted">
+                  Ensure that this name is correct!
+                </Form.Text>
+              </Form.Group>
+              {this.state.error ? <p>{this.state.error}</p> : null}
+
+              <Button
+                variant="primary"
+                type="submit"
+                onClick={this.handleSubmit}
+              >
+                Sign Up
+              </Button>
+            </Form>
+            <hr />
+            <p>
+              Already have an account? <Link to="/login">Log In</Link>
+            </p>
+            {/* </form> */}
+          </section>
+        </div>
+      </>
     );
   }
 }

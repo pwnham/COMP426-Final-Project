@@ -5,6 +5,6 @@ body {
   background-color: #fcfcfc;
 }
 
-.ingredient {
-  display: inline-block;
+.pizza {
+  background-color: yellow;
 }

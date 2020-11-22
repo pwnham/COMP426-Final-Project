@@ -42,45 +42,93 @@ export default class Login extends Component {
 
   render() {
     return (
-      <div>
-        <h1>
-          Login to
-          <Link to="/">FridgeShare</Link>
-        </h1>
-        <p>Fill in the form below to login to your account.</p>
-        <Form>
-          <Form.Group controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control
-              name="email"
-              type="email"
-              placeholder="Enter email"
-              onChange={this.handleChange}
-            />
-          </Form.Group>
+      <>
+        <style type="text/css">{`
 
-          <Form.Group controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              name="password"
-              type="password"
-              placeholder="Enter Password"
-              onChange={this.handleChange}
-            />
-          </Form.Group>
+body {
+  background-color: #fcf8eb;
+}
 
-          {this.state.error ? <p>{this.state.error}</p> : null}
+.loginpage{
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-image: linear-gradient(#ffe25e, #fcebbb);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
-          <Button variant="primary" type="submit" onClick={this.handleSubmit}>
-            Login
-          </Button>
-        </Form>
-        <hr />
-        <p>
-          Don't have an account? <Link to="/signup">Sign up</Link>
-        </p>
-        {/* </form> */}
-      </div>
+.loginsection{
+  width: 700px;
+  min-height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  background-color: #faf0cf;
+  padding: 20px;
+  border-color: gray;
+  border-width: 5px;
+  border-style: solid;
+  border-radius: 10px;
+}
+
+.center{
+  text-align: center;
+}
+         
+         `}</style>
+        <div class="loginpage">
+          <section class="loginsection">
+            <h1 class="center">
+              Login to <Link to="/">FridgeShare</Link>
+            </h1>
+            <br></br>
+            <p>Fill in the form below to login to your account.</p>
+            <div>
+              <Form>
+                <Form.Group controlId="formBasicEmail">
+                  <Form.Label>Email address</Form.Label>
+                  <Form.Control
+                    name="email"
+                    type="email"
+                    placeholder="Enter email"
+                    onChange={this.handleChange}
+                  />
+                </Form.Group>
+
+                <Form.Group controlId="formBasicPassword">
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control
+                    name="password"
+                    type="password"
+                    placeholder="Enter Password"
+                    onChange={this.handleChange}
+                  />
+                </Form.Group>
+
+                {this.state.error ? <p>{this.state.error}</p> : null}
+
+                <Button
+                  variant="primary"
+                  type="submit"
+                  onClick={this.handleSubmit}
+                >
+                  Login
+                </Button>
+              </Form>
+            </div>
+            <hr />
+            <p>
+              Don't have an account? <Link to="/signup">Sign up</Link>
+            </p>
+            {/* </form> */}
+          </section>
+        </div>
+      </>
     );
   }
 }

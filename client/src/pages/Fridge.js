@@ -38,10 +38,6 @@ export default class Fridge extends Component {
   }
 
   handleDeleteFood(food, user) {
-    console.log(food);
-    console.log(user);
-    console.log(this.state.members);
-
     const i = this.state.members.findIndex(
       (element) => element.name === user.name
     );
@@ -206,11 +202,57 @@ export default class Fridge extends Component {
   render() {
     return (
       <>
+        <style type="text/css">{`
+body {
+  background-color: #fcf8eb;
+}
+
+.accordion {
+  border-style: solid;
+  border-width: 5px;
+  border-radius: 5px;
+  margin-right: 50px;
+  margin-left: 50px;
+}
+
+.card {
+  background-color: #ffe25e;
+  border-radius: 0;
+  border-bottom-width: 5px;
+  border-style: solid;
+}
+
+.list-group-item {
+  background-color: #faf0cf;
+  border-style: solid;
+  border-width: 2px;
+  border-color: gray;
+}
+
+.card-body {
+  background-color:#fcebbb;
+}
+
+.btn, .btn-success, .btn-danger{
+  border-style: solid;
+  border-color: #5c5c5c;
+  border-width: 2px;
+}
+
+.logout{
+  border-color: gray;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 4px;
+  margin-left: 50px;
+}
+
+`}</style>
         <div>
           <br></br>
           <Accordion>{this.createUIForGroup()}</Accordion>
           <hr></hr>
-          <button onClick={this.signOutUser} type="button">
+          <button onClick={this.signOutUser} type="button" class="logout">
             Log Out?
           </button>
           {this.renderModal()}
