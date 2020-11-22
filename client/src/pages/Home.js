@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { Jumbotron } from "react-bootstrap";
+import { Jumbotron, Button } from "react-bootstrap";
 
 export default class Home extends Component {
   render() {
@@ -20,33 +20,71 @@ body {
   background-color: #ffe25e;
 }
 
-.center{
-  padding-left: 200px;
-  padding-right: 200px;
-
-}
-
-.title{
-  text-align: left;
+.inline{
+  display: inline;
 }
 
 .jumbotron{
   background-color: transparent;
 }
-         
+
+.size{
+  width: 800px;
+  margin-right: auto;
+  margin-left: auto;
+  align-self: center;
+  align-items: center;
+  justify-content: space-between;
+  display: flex;
+}
+
+.btn, .btn-primary{
+  border-style: solid;
+  border-color: #5c5c5c;
+  border-width: 2px;
+  background-color: transparent;
+  color: #5c5c5c;
+  
+}
+
+.btn-primary:hover {
+  color: white;
+  background-color: #5c5c5c;
+  border-color: black;
+}
+
+.buttongroup{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.left{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.signup-button{
+  margin-right: 8px;
+}
+
+
          `}</style>
         <div class="darkcolor center">
           <Jumbotron>
-            <div>
-              <section>
-                <div>
-                  <div>
-                    <h1>FridgeShare</h1>
-                    <Link to="/signup">Create New Account</Link>
-                    <Link to="/login">Login to Your Account</Link>
-                  </div>
-                </div>
-              </section>
+            <div class="size">
+              <div class="left inline">
+                <h1 class>FridgeShare</h1>
+              </div>
+              <div class="buttongroup inline">
+                <a href="/signup" class="btn btn-primary signup-button">
+                  Sign Up
+                </a>
+                <a href="/login" class="btn btn-primary">
+                  Login
+                </a>
+              </div>
             </div>
           </Jumbotron>
         </div>

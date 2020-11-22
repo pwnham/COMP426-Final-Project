@@ -153,6 +153,7 @@ body {
                   this.setState({ isChecked: !this.state.isChecked })
                 }
               ></Form.Check>
+              <br></br>
 
               {this.state.isChecked ? (
                 <Form.Group controlId="formCreateGroup">
