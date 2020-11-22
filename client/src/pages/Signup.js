@@ -11,7 +11,9 @@ export default class SignUp extends Component {
       email: "",
       password: "",
       groupName: "",
+      createGroup: "",
       name: "",
+      isChecked: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -32,7 +34,8 @@ export default class SignUp extends Component {
         this.state.name,
         this.state.email,
         this.state.password,
-        this.state.groupName
+        this.state.isChecked ? this.state.createGroup : this.state.groupName,
+        this.state.isChecked
       );
     } catch (error) {
       this.setState({ error: error.message });
@@ -135,11 +138,36 @@ body {
                   type="groupName"
                   placeholder="Enter Group Name"
                   onChange={this.handleChange}
+                  disabled={this.state.isChecked}
                 />
                 <Form.Text className="text-muted">
                   Ensure that this name is correct!
                 </Form.Text>
               </Form.Group>
+
+              <Form.Check
+                type="checkbox"
+                id="chooseCreateGroup"
+                label="Or Create A Group!"
+                onChange={() =>
+                  this.setState({ isChecked: !this.state.isChecked })
+                }
+              ></Form.Check>
+
+              {this.state.isChecked ? (
+                <Form.Group controlId="formCreateGroup">
+                  <Form.Label>
+                    Enter the name of the Group You'll Create
+                  </Form.Label>
+                  <Form.Control
+                    name="createGroup"
+                    type="createGroup"
+                    placeholder="Enter New Group Name"
+                    onChange={this.handleChange}
+                  />
+                </Form.Group>
+              ) : null}
+
               {this.state.error ? <p>{this.state.error}</p> : null}
 
               <Button

@@ -1,26 +1,32 @@
 import { auth, db } from "../services/firebase";
 
-export async function signup(name, email, password, groupName) {
+export async function signup(name, email, password, groupName, isCreateGroup) {
   const credential = await auth().createUserWithEmailAndPassword(
     email,
     password
   );
   console.log(credential.user);
-  const members = await db
-    .ref("/groups/" + groupName)
-    .once("value")
-    .then((snapshot) => {
-      const data = snapshot.val();
-      const res = [];
-      for (var i = 0; i < data.members.length; i++) {
-        res.push(data.members[i]);
-      }
-      return res;
+  if (isCreateGroup) {
+    db.ref("/groups/" + groupName).set({
+      members: [{ name: name, uid: credential.user.uid }],
     });
-  members.push({ name: name, uid: credential.user.uid });
-  db.ref("groups/" + groupName).update({
-    members: members,
-  });
+  } else {
+    const members = await db
+      .ref("/groups/" + groupName)
+      .once("value")
+      .then((snapshot) => {
+        const data = snapshot.val();
+        const res = [];
+        for (var i = 0; i < data.members.length; i++) {
+          res.push(data.members[i]);
+        }
+        return res;
+      });
+    members.push({ name: name, uid: credential.user.uid });
+    db.ref("groups/" + groupName).update({
+      members: members,
+    });
+  }
 }
 
 export function signin(email, password) {
