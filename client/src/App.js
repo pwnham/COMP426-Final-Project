@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Fridge from "./pages/Fridge";
+import ExpiryCalendar from "./pages/Calendar";
 import { auth } from "./services/firebase";
 import "./styles.css";
 
@@ -80,6 +81,11 @@ class App extends Component {
             path="/fridge"
             authenticated={this.state.authenticated}
             component={Fridge}
+          ></PrivateRoute>
+          <PrivateRoute
+            path="/calendar"
+            authenticated={this.state.authenticated}
+            component={ExpiryCalendar}
           ></PrivateRoute>
           <PublicRoute
             path="/signup"
