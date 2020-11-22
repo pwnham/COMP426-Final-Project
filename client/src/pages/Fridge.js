@@ -22,6 +22,7 @@ export default class Fridge extends Component {
       showModal: false,
       modalName: "",
       addedFood: "",
+      addedExpiryDate: "",
       groupName: "",
     };
     this.signOutUser = this.signOutUser.bind(this);
@@ -44,9 +45,9 @@ export default class Fridge extends Component {
     const i = this.state.members.findIndex(
       (element) => element.name === user.name
     );
-
     const m = this.state.members;
-    m[i].foods.splice(m[i].foods.indexOf(food), 1);
+    const j = m[i].foods.findIndex((element) => element.name === food);
+    m[i].foods.splice(j, 1);
     if (m[i].foods.length === 0) {
       m[i].foods = null;
     }
@@ -94,6 +95,7 @@ export default class Fridge extends Component {
               protein: info.protein_g,
               carbs: info.carbohydrates_total_g,
               fat: info.fat_total_g,
+              expiryDate: this.state.addedExpiryDate,
             });
           } else {
             m[i].foods = [
@@ -105,6 +107,7 @@ export default class Fridge extends Component {
                 protein: info.protein_g,
                 carbs: info.carbohydrates_total_g,
                 fat: info.fat_total_g,
+                expiryDate: this.state.addedExpiryDate,
               },
             ];
           }
@@ -114,15 +117,21 @@ export default class Fridge extends Component {
               id: foodID,
               name: this.state.addedFood,
               hasInfo: false,
+              expiryDate: this.state.addedExpiryDate,
             });
           } else {
             m[i].foods = [
-              { id: foodID, name: this.state.addedFood, hasInfo: false },
+              {
+                id: foodID,
+                name: this.state.addedFood,
+                hasInfo: false,
+                expiryDate: this.state.addedExpiryDate,
+              },
             ];
           }
         }
 
-        this.setState({ members: m });
+        this.setState({ members: m, addedExpiryDate: "" });
         this.updateFirebaseDoc();
       })
       .catch((err) => {
@@ -153,10 +162,8 @@ export default class Fridge extends Component {
                 onClick={() => {
                   if (this.state[value.id]) {
                     this.setState({ [value.id]: false });
-                    console.log(this.state[value.id]);
                   } else {
                     this.setState({ [value.id]: true });
-                    console.log(this.state[value.id]);
                   }
                 }}
               >
@@ -207,9 +214,7 @@ export default class Fridge extends Component {
       .once("value")
       .then((snapshot) => {
         const groups = snapshot.val();
-        console.log(groups);
         for (var key in groups) {
-          console.log(groups[key]);
           const found = groups[key].members.find(
             (element) => element.uid === uid
           );
@@ -241,6 +246,17 @@ export default class Fridge extends Component {
                   type="foodName"
                   placeholder="Enter food"
                   onChange={(e) => this.setState({ addedFood: e.target.value })}
+                />
+              </Form.Group>
+
+              <Form.Group controlId="forExpiryDate">
+                <Form.Label>When will it expire? (Optional)</Form.Label>
+                <Form.Control
+                  type="date"
+                  placeholder="Enter Date"
+                  onChange={(e) =>
+                    this.setState({ addedExpiryDate: e.target.value })
+                  }
                 />
               </Form.Group>
               <Button

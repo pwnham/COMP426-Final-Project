@@ -7,6 +7,7 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "../styles.css";
+import { db, auth } from "../services/firebase";
 
 export default class ExpiryCalendar extends Component {
   constructor(props) {
@@ -19,6 +20,10 @@ export default class ExpiryCalendar extends Component {
     this.localizer = momentLocalizer(moment);
   }
 
+  componentDidMount() {
+    this.getFoods();
+  }
+
   async signOutUser(event) {
     event.preventDefault();
     try {
@@ -26,6 +31,39 @@ export default class ExpiryCalendar extends Component {
     } catch (error) {
       this.setState({ error: error.message });
     }
+  }
+
+  async getFoods() {
+    const uid = await auth().currentUser.uid;
+    var groupName = "";
+    var members = [];
+    var user = {};
+    const groups = await db
+      .ref("/groups")
+      .once("value")
+      .then((snapshot) => {
+        const groups = snapshot.val();
+        for (var key in groups) {
+          const found = groups[key].members.find(
+            (element) => element.uid === uid
+          );
+          if (found) {
+            user = found;
+            break;
+          }
+        }
+      });
+    this.setState({ foods: user.foods });
+  }
+
+  createEvents() {
+    return this.state.foods
+      ? this.state.foods.map((food) => ({
+          title: food.name,
+          start: new Date(food.expiryDate),
+          end: new Date(food.expiryDate),
+        }))
+      : [];
   }
 
   render() {
@@ -45,7 +83,7 @@ export default class ExpiryCalendar extends Component {
             localizer={this.localizer}
             startAccessor="start"
             endAccessor="end"
-            events={eventsExpire}
+            events={this.createEvents()}
             defaultDate={moment().toDate()}
             style={{ height: 600, width: "95%" }}
             views={["month"]}
