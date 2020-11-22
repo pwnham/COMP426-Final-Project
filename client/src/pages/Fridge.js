@@ -12,6 +12,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { signout } from "../helpers/auth";
 import { db, auth } from "../services/firebase";
+import uuid from "uuid";
 
 export default class Fridge extends Component {
   constructor(props) {
@@ -63,16 +64,70 @@ export default class Fridge extends Component {
     const i = this.state.members.findIndex(
       (element) => element.name === this.state.modalName
     );
+    fetch(
+      "https://calorieninjas.p.rapidapi.com/v1/nutrition?query=" +
+        this.state.addedFood,
+      {
+        method: "GET",
+        headers: {
+          "x-rapidapi-key":
+            "af8c2d2137msh4e1e2a1f3750927p1604b6jsn3610d0a37a78",
+          "x-rapidapi-host": "calorieninjas.p.rapidapi.com",
+        },
+      }
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((response) => {
+        const info = response.items[0];
+        const foodID = uuid();
 
-    const m = this.state.members;
-    if (m[i].foods) {
-      m[i].foods.push(this.state.addedFood);
-    } else {
-      m[i].foods = [this.state.addedFood];
-    }
+        const m = this.state.members;
+        if (info) {
+          if (m[i].foods) {
+            m[i].foods.push({
+              id: foodID,
+              name: this.state.addedFood,
+              hasInfo: true,
+              calories: info.calories,
+              protein: info.protein_g,
+              carbs: info.carbohydrates_total_g,
+              fat: info.fat_total_g,
+            });
+          } else {
+            m[i].foods = [
+              {
+                id: foodID,
+                name: this.state.addedFood,
+                hasInfo: true,
+                calories: info.calories,
+                protein: info.protein_g,
+                carbs: info.carbohydrates_total_g,
+                fat: info.fat_total_g,
+              },
+            ];
+          }
+        } else {
+          if (m[i].foods) {
+            m[i].foods.push({
+              id: foodID,
+              name: this.state.addedFood,
+              hasInfo: false,
+            });
+          } else {
+            m[i].foods = [
+              { id: foodID, name: this.state.addedFood, hasInfo: false },
+            ];
+          }
+        }
 
-    this.setState({ members: m });
-    this.updateFirebaseDoc();
+        this.setState({ members: m });
+        this.updateFirebaseDoc();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
   foodListToUI(user) {
@@ -82,16 +137,58 @@ export default class Fridge extends Component {
       const foods = user.foods;
       for (const [index, value] of foods.entries()) {
         uiList.push(
-          <ListGroup.Item>
-            {value}{" "}
-            <Button
-              variant="danger"
-              className="float-right"
-              onClick={() => this.handleDeleteFood(value, user)}
-            >
-              delete
-            </Button>
-          </ListGroup.Item>
+          <>
+            <ListGroup.Item>
+              {value.name}
+              <Button
+                variant="danger"
+                className="float-right"
+                onClick={() => this.handleDeleteFood(value.name, user)}
+              >
+                delete
+              </Button>
+              <Button
+                variant="secondary"
+                className="float-right"
+                onClick={() => {
+                  if (this.state[value.id]) {
+                    this.setState({ [value.id]: false });
+                    console.log(this.state[value.id]);
+                  } else {
+                    this.setState({ [value.id]: true });
+                    console.log(this.state[value.id]);
+                  }
+                }}
+              >
+                {this.state[value.id] ? "Close Info" : "View Info"}
+              </Button>
+            </ListGroup.Item>
+            {this.state[value.id] ? (
+              value.hasInfo ? (
+                <>
+                  <ListGroup.Item className="info-card">
+                    Per 100g
+                  </ListGroup.Item>
+                  <ListGroup.Item className="info-card">
+                    Calories: {value.calories}
+                  </ListGroup.Item>
+                  <ListGroup.Item className="info-card">
+                    Carbohydrates: {value.carbs}
+                  </ListGroup.Item>
+                  <ListGroup.Item className="info-card">
+                    Protein: {value.protein}
+                  </ListGroup.Item>
+                  <ListGroup.Item className="info-card">
+                    Fats: {value.fat}
+                  </ListGroup.Item>
+                </>
+              ) : (
+                <ListGroup.Item className="info-card">
+                  No Nutritional Info!
+                </ListGroup.Item>
+              )
+            ) : null}
+          </>
         );
       }
 
@@ -249,6 +346,9 @@ body {
   margin-left: 50px;
 }
 
+.info-card{
+  background-color: #fcf8eb;
+}
 `}</style>
         <div>
           <Header />
