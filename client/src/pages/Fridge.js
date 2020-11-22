@@ -8,6 +8,8 @@ import {
   Modal,
   Form,
 } from "react-bootstrap";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 import { signout } from "../helpers/auth";
 import { db, auth } from "../services/firebase";
 
@@ -249,6 +251,7 @@ body {
 
 `}</style>
         <div>
+          <Header />
           <br></br>
           <Accordion>{this.createUIForGroup()}</Accordion>
           <hr></hr>
@@ -256,6 +259,7 @@ body {
             Log Out?
           </button>
           {this.renderModal()}
+          <Footer />
         </div>
       </>
     );

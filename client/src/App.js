@@ -74,36 +74,38 @@ class App extends Component {
     return this.state.loading === true ? (
       <h2>Loading...</h2>
     ) : (
-      <Router>
-        <Switch>
-          {/* <PublicRoute
+      <div>
+        <Router>
+          <Switch>
+            {/* <PublicRoute
             path="/"
             authenticated={this.state.authenticated}
             component={Home}
           ></PublicRoute> */}
-          <Route exact path="/" component={Home}></Route>
-          <PrivateRoute
-            path="/fridge"
-            authenticated={this.state.authenticated}
-            component={Fridge}
-          ></PrivateRoute>
-          <PrivateRoute
-            path="/calendar"
-            authenticated={this.state.authenticated}
-            component={ExpiryCalendar}
-          ></PrivateRoute>
-          <PublicRoute
-            path="/signup"
-            authenticated={this.state.authenticated}
-            component={Signup}
-          ></PublicRoute>
-          <PublicRoute
-            path="/login"
-            authenticated={this.state.authenticated}
-            component={Login}
-          ></PublicRoute>
-        </Switch>
-      </Router>
+            <Route exact path="/" component={Home}></Route>
+            <PrivateRoute
+              path="/fridge"
+              authenticated={this.state.authenticated}
+              component={Fridge}
+            ></PrivateRoute>
+            <PrivateRoute
+              path="/calendar"
+              authenticated={this.state.authenticated}
+              component={ExpiryCalendar}
+            ></PrivateRoute>
+            <PublicRoute
+              path="/signup"
+              authenticated={this.state.authenticated}
+              component={Signup}
+            ></PublicRoute>
+            <PublicRoute
+              path="/login"
+              authenticated={this.state.authenticated}
+              component={Login}
+            ></PublicRoute>
+          </Switch>
+        </Router>
+      </div>
     );
   }
 }
