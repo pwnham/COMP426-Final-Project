@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { signup, signInWithGoogle } from "../helpers/auth";
+import { Button, Form } from "react-bootstrap";
 
 export default class SignUp extends Component {
   constructor(props) {
@@ -9,6 +10,8 @@ export default class SignUp extends Component {
       error: null,
       email: "",
       password: "",
+      groupName: "",
+      name: "",
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -25,7 +28,12 @@ export default class SignUp extends Component {
     event.preventDefault();
     this.setState({ error: "" });
     try {
-      await signup(this.state.email, this.state.password);
+      await signup(
+        this.state.name,
+        this.state.email,
+        this.state.password,
+        this.state.groupName
+      );
     } catch (error) {
       this.setState({ error: error.message });
     }
@@ -42,43 +50,67 @@ export default class SignUp extends Component {
   render() {
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
-          <h1>
-            Sign Up to
-            <Link to="/">FridgeShare</Link>
-          </h1>
-          <p>Fill in the form below to create an account.</p>
-          <div>
-            <input
-              placeholder="Email"
+        <h1>
+          Sign Up to
+          <Link to="/">FridgeShare</Link>
+        </h1>
+        <p>Fill in the form below to create your account.</p>
+        <Form>
+          <Form.Group controlId="formBasicEmail">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control
               name="email"
               type="email"
+              placeholder="Enter email"
               onChange={this.handleChange}
-              value={this.state.email}
-            ></input>
-          </div>
-          <div>
-            <input
-              placeholder="Password"
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formBasicPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
               name="password"
-              onChange={this.handleChange}
-              value={this.state.password}
               type="password"
-            ></input>
-          </div>
-          <div>
-            {this.state.error ? <p>{this.state.error}</p> : null}
-            <button type="submit">Sign up</button>
-          </div>
-          <p>Or</p>
-          <button onClick={this.googleSignIn} type="button">
-            Sign up with Google
-          </button>
-          <hr></hr>
-          <p>
-            Already have an account? <Link to="/login">Login</Link>
-          </p>
-        </form>
+              placeholder="Enter Password"
+              onChange={this.handleChange}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formBasicName">
+            <Form.Label>First Name</Form.Label>
+            <Form.Control
+              name="name"
+              type="name"
+              placeholder="Enter Name"
+              onChange={this.handleChange}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formBasicGroupName">
+            <Form.Label>
+              Enter the name of the group you would like to join!
+            </Form.Label>
+            <Form.Control
+              name="groupName"
+              type="groupName"
+              placeholder="Enter Group Name"
+              onChange={this.handleChange}
+            />
+            <Form.Text className="text-muted">
+              Ensure that this name is correct!
+            </Form.Text>
+          </Form.Group>
+          {this.state.error ? <p>{this.state.error}</p> : null}
+
+          <Button variant="primary" type="submit" onClick={this.handleSubmit}>
+            Sign Up
+          </Button>
+        </Form>
+        <hr />
+        <p>
+          Already have an account? <Link to="/login">Log In</Link>
+        </p>
+        {/* </form> */}
       </div>
     );
   }

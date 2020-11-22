@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { signin, signInWithGoogle } from "../helpers/auth";
+import { Button, Form } from "react-bootstrap";
 
 export default class Login extends Component {
   constructor(props) {
@@ -42,43 +43,43 @@ export default class Login extends Component {
   render() {
     return (
       <div>
-        <form autoComplete="off" onSubmit={this.handleSubmit}>
-          <h1>
-            Login to
-            <Link to="/">FridgeShare</Link>
-          </h1>
-          <p>Fill in the form below to login to your account.</p>
-          <div>
-            <input
-              placeholder="Email"
+        <h1>
+          Login to
+          <Link to="/">FridgeShare</Link>
+        </h1>
+        <p>Fill in the form below to login to your account.</p>
+        <Form>
+          <Form.Group controlId="formBasicEmail">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control
               name="email"
               type="email"
+              placeholder="Enter email"
               onChange={this.handleChange}
-              value={this.state.email}
             />
-          </div>
-          <div>
-            <input
-              placeholder="Password"
+          </Form.Group>
+
+          <Form.Group controlId="formBasicPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
               name="password"
-              onChange={this.handleChange}
-              value={this.state.password}
               type="password"
+              placeholder="Enter Password"
+              onChange={this.handleChange}
             />
-          </div>
-          <div>
-            {this.state.error ? <p>{this.state.error}</p> : null}
-            <button type="submit">Login</button>
-          </div>
-          <p>Or</p>
-          <button onClick={this.googleSignIn} type="button">
-            Sign up with Google
-          </button>
-          <hr />
-          <p>
-            Don't have an account? <Link to="/signup">Sign up</Link>
-          </p>
-        </form>
+          </Form.Group>
+
+          {this.state.error ? <p>{this.state.error}</p> : null}
+
+          <Button variant="primary" type="submit" onClick={this.handleSubmit}>
+            Login
+          </Button>
+        </Form>
+        <hr />
+        <p>
+          Don't have an account? <Link to="/signup">Sign up</Link>
+        </p>
+        {/* </form> */}
       </div>
     );
   }

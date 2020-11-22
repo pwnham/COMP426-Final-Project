@@ -1,7 +1,26 @@
-import { auth } from "../services/firebase";
+import { auth, db } from "../services/firebase";
 
-export function signup(email, password) {
-  return auth().createUserWithEmailAndPassword(email, password);
+export async function signup(name, email, password, groupName) {
+  const credential = await auth().createUserWithEmailAndPassword(
+    email,
+    password
+  );
+  console.log(credential.user);
+  const members = await db
+    .ref("/groups/" + groupName)
+    .once("value")
+    .then((snapshot) => {
+      const data = snapshot.val();
+      const res = [];
+      for (var i = 0; i < data.members.length; i++) {
+        res.push(data.members[i]);
+      }
+      return res;
+    });
+  members.push({ name: name, uid: credential.user.uid });
+  db.ref("groups/" + groupName).update({
+    members: members,
+  });
 }
 
 export function signin(email, password) {

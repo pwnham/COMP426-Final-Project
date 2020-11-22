@@ -9,7 +9,7 @@ import {
   Form,
 } from "react-bootstrap";
 import { signout } from "../helpers/auth";
-import { db } from "../services/firebase";
+import { db, auth } from "../services/firebase";
 
 export default class Fridge extends Component {
   constructor(props) {
@@ -19,6 +19,7 @@ export default class Fridge extends Component {
       showModal: false,
       modalName: "",
       addedFood: "",
+      groupName: "",
     };
     this.signOutUser = this.signOutUser.bind(this);
   }
@@ -47,12 +48,15 @@ export default class Fridge extends Component {
 
     const m = this.state.members;
     m[i].foods.splice(m[i].foods.indexOf(food), 1);
+    if (m[i].foods.length === 0) {
+      m[i].foods = null;
+    }
     this.setState({ members: m });
     this.updateFirebaseDoc();
   }
 
   async updateFirebaseDoc() {
-    db.ref("groups/admins").update({
+    db.ref("groups/" + this.state.groupName).update({
       members: this.state.members,
     });
   }
@@ -100,18 +104,28 @@ export default class Fridge extends Component {
   }
 
   async getFoods() {
-    const members = await db
-      .ref("/groups/admins")
+    const uid = await auth().currentUser.uid;
+    var groupName = "";
+    var members = [];
+    const groups = await db
+      .ref("/groups")
       .once("value")
       .then((snapshot) => {
-        const data = snapshot.val();
-        const res = [];
-        for (var i = 0; i < data.members.length; i++) {
-          res.push(data.members[i]);
+        const groups = snapshot.val();
+        console.log(groups);
+        for (var key in groups) {
+          console.log(groups[key]);
+          const found = groups[key].members.find(
+            (element) => element.uid === uid
+          );
+          if (found) {
+            groupName = key;
+            members = groups[key].members;
+          }
         }
-        return res;
       });
-    this.setState({ members: members });
+
+    this.setState({ members: members, groupName: groupName });
   }
 
   renderModal() {
@@ -191,15 +205,17 @@ export default class Fridge extends Component {
 
   render() {
     return (
-      <div>
-        <br></br>
-        <Accordion>{this.createUIForGroup()}</Accordion>
-        <hr></hr>
-        <button onClick={this.signOutUser} type="button">
-          Log Out?
-        </button>
-        {this.renderModal()}
-      </div>
+      <>
+        <div>
+          <br></br>
+          <Accordion>{this.createUIForGroup()}</Accordion>
+          <hr></hr>
+          <button onClick={this.signOutUser} type="button">
+            Log Out?
+          </button>
+          {this.renderModal()}
+        </div>
+      </>
     );
   }
 }
