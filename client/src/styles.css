@@ -5,6 +5,148 @@ body {
   background-color: #fcfcfc;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+.footer {
+  display: flex;
+  margin-top: 1rem;
+  justify-content: center;
+}
+
+.header .dropBttn {
+  margin-left: 10px;
+}
+
+#nav_menu {
+  top: 0;
+  margin: 1rem;
+  font-size: 1.1em;
+  z-index: 1000;
+}
+
+#nav_menu ul {
+  list-style: none;
+  position: relative;
+  
+}
+
+#nav_menu ul li {
+  float: left;
+  font-size: 1em;
+  
+}
+
+#nav_menu ul ul {
+  display: none;
+  position: absolute;
+  top: 100%;
+  text-align: center;
+}
+
+#nav_menu ul ul li {
+  float: none;
+  position: relative;
+}
+
+#nav_menu ul ul li ul {
+  position: absolute;
+  left: 50;
+  top: 0;
+}
+
+#nav_menu ul li:hover>ul {
+  display: block;
+}
+
+#nav_menu ul::after {
+  content: "";
+  clear: both;
+  display: block;
+}
+
+#nav_menu ul {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  
+}
+
+#nav_menu ul li {
+  padding-right: .5rem;
+}
+
+#nav_menu ul li button {
+  
+  display: block;
+  padding: .5rem;
+  text-align: center;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#nav_menu ul li button.current {
+  color: aquamarine;
+}
+
+#nav_menu ul li button:hover,
+#nav_menu ul li button:focus {
+  background-color: #e8e6e9;
+}
+
+#nav_menu ul li:hover ul {
+  width: 100%;
+}
+
+#nav_menu ul li:hover ul li button {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+
+.logo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.logo h1 {
+  font-size: 1.5rem;
+}
+
+.leftHeader {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+
+#calendarView {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+}
+
+.calReturn{
+  display: flex;
+  align-self: flex-end;
+  margin-right: 50px;
+}
+
+
+.rbc-toolbar { 
+  font-size: 1.5rem;
+}
+
+
+
 .pizza {
   background-color: yellow;
 }
