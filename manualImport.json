@@ -1,0 +1,35 @@
+{
+  "groups": {
+    "admins": {
+      "members": [
+        {
+          "name": "Mohammad",
+          "foods": ["pizza", "pasta", "gio"],
+          "uid": "aPMbK8WiCKaY3qX1ji13qWqWOOK2"
+        },
+        {
+          "name": "Ammar",
+          "foods": ["jag", "candy", "peanut"],
+          "uid": "jp8jLSM9rJafV4dOh8tH718xkEh2"
+        },
+        {
+          "name": "Megan",
+          "foods": ["mac", "cake", "v8"],
+          "uid": "wGhnlthvIVMbMB63YPCiAY4k1083"
+        }
+      ],
+      "transactions": {}
+    },
+    "randos": {
+      "members": [
+        { "name": "Aidan", "foods": ["turkey", "quesadilla", "franks red"] },
+        {
+          "name": "Mary",
+          "foods": ["french fries", "mashed potato", "collard greens"]
+        },
+        { "name": "Ryan", "foods": ["bacon", "cheese", "oil"] }
+      ],
+      "transactions": {}
+    }
+  }
+}
