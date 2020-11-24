@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { signup, signInWithGoogle } from "../helpers/auth";
 import { Button, Form } from "react-bootstrap";
+import { db } from "../services/firebase";
+import Autocomplete from "../components/Autocomplete";
 
 export default class SignUp extends Component {
   constructor(props) {
@@ -13,11 +15,37 @@ export default class SignUp extends Component {
       groupName: "",
       createGroup: "",
       name: "",
+      groups: [],
       isChecked: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.googleSignIn = this.googleSignIn.bind(this);
+  }
+
+  setParent = (v) => {
+    this.setState({ groupName: v });
+  };
+
+  componentDidMount() {
+    this.getGroups();
+  }
+
+  async getGroups() {
+    const groups = await db
+      .ref("/groups")
+      .once("value")
+      .then((snapshot) => {
+        const groups = snapshot.val();
+        var groupNames = [];
+        for (var key in groups) {
+          groupNames.push(key);
+        }
+        return groupNames;
+      });
+
+    console.log(groups);
+    this.setState({ groups: groups });
   }
 
   handleChange(event) {
@@ -128,7 +156,12 @@ body {
                   onChange={this.handleChange}
                 />
               </Form.Group>
-
+              <Autocomplete
+                setParent={this.setParent}
+                disabled={this.state.isChecked}
+                suggestions={this.state.groups}
+              />
+              {/*
               <Form.Group controlId="formBasicGroupName">
                 <Form.Label>
                   Enter the name of the group you would like to join!
@@ -143,8 +176,8 @@ body {
                 <Form.Text className="text-muted">
                   Ensure that this name is correct!
                 </Form.Text>
-              </Form.Group>
-
+</Form.Group>*/}
+              <br></br>
               <Form.Check
                 type="checkbox"
                 id="chooseCreateGroup"

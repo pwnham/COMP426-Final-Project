@@ -68,30 +68,33 @@ export default class ExpiryCalendar extends Component {
 
   render() {
     return (
-      <div className="calendarRoot">
-        <Header />
+      <>
+        <style type="text/css">{`
+body {
+  background-color: #fcf8eb;
+}`}</style>
+        <div className="calendarRoot">
+          <Header />
 
-        <div id="calendarView">
-          <div className="calHeading">
-            <h1 className="calName">Expiration Calendar</h1>
+          <div id="calendarView">
+            <div className="calHeading">
+              <h1 className="calName">Expiration Calendar</h1>
+            </div>
+
+            <Calendar
+              localizer={this.localizer}
+              startAccessor="start"
+              endAccessor="end"
+              events={eventsExpire}
+              defaultDate={moment().toDate()}
+              style={{ height: 600, width: "95%" }}
+              views={["month"]}
+            />
           </div>
-          <Link className="calReturn" to="/fridge">
-            Return to Fridge
-          </Link>
 
-          <Calendar
-            localizer={this.localizer}
-            startAccessor="start"
-            endAccessor="end"
-            events={this.createEvents()}
-            defaultDate={moment().toDate()}
-            style={{ height: 600, width: "95%" }}
-            views={["month"]}
-          />
+          <Footer />
         </div>
-
-        <Footer />
-      </div>
+      </>
     );
   }
 }

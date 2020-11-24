@@ -9,7 +9,7 @@ export default class Home extends Component {
         <style type="text/css">{`
 
 body {
-  background-color: #fcf8eb;
+  background-color: #fcebbb;
 }
 
 .lightcolor{
@@ -18,6 +18,9 @@ body {
 
 .darkcolor{
   background-color: #ffe25e;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: black;
 }
 
 .inline{
@@ -35,6 +38,9 @@ body {
   align-self: center;
   align-items: center;
   justify-content: space-between;
+}
+
+.size2{
   display: flex;
 }
 
@@ -71,9 +77,9 @@ body {
 
 
          `}</style>
-        <div class="darkcolor center">
+        <div class="darkcolor">
           <Jumbotron>
-            <div class="size">
+            <div class="size size2">
               <div class="left inline">
                 <h1 class>FridgeShare</h1>
               </div>
@@ -88,11 +94,20 @@ body {
             </div>
           </Jumbotron>
         </div>
-        <div class="lightcolor center">
+        <div class="lightcolor">
           <Jumbotron>
-            <div>
-              <h1>Welcome to FridgeShare</h1>
-              <p>A Collaborative Fridge Tool</p>
+            <div class="size">
+              <div>
+                <h1>Welcome to FridgeShare</h1>
+              </div>
+              <div>
+                <p>
+                  A collaborative fridge tool to help you manage your fridge in
+                  group settings. All it takes is a few presses and all of the
+                  group mishaps of other people taking your food will be solved
+                  in seconds!
+                </p>
+              </div>
             </div>
           </Jumbotron>
         </div>

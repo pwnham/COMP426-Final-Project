@@ -354,26 +354,20 @@ body {
   border-width: 2px;
 }
 
-.logout{
-  border-color: gray;
-  border-width: 2px;
-  border-style: solid;
-  border-radius: 4px;
-  margin-left: 50px;
-}
-
 .info-card{
   background-color: #fcf8eb;
+}
+
+.fridgeTitle{
+  text-align: center;
 }
 `}</style>
         <div>
           <Header />
+          <h1 class="fridgeTitle">Fridge</h1>
           <br></br>
           <Accordion>{this.createUIForGroup()}</Accordion>
           <hr></hr>
-          <button onClick={this.signOutUser} type="button" class="logout">
-            Log Out?
-          </button>
           {this.renderModal()}
           <Footer />
         </div>
