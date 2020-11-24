@@ -85,7 +85,7 @@ body {
               localizer={this.localizer}
               startAccessor="start"
               endAccessor="end"
-              events={eventsExpire}
+              events={this.createEvents()}
               defaultDate={moment().toDate()}
               style={{ height: 600, width: "95%" }}
               views={["month"]}
