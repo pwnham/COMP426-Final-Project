@@ -82,14 +82,9 @@ export class Header extends Component {
               <ul>
                 <li>
                   <button id="drop1" class="btn btn-primary">
-                    username
+                    {this.props.username}
                   </button>
                   <ul>
-                    <li>
-                      <button id="drop2" class="btn btn-primary">
-                        user info
-                      </button>
-                    </li>
                     <li>
                       <button
                         onClick={this.signOutUser}
