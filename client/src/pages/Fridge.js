@@ -19,6 +19,7 @@ export default class Fridge extends Component {
     super(props);
     this.state = {
       members: [],
+      userName: "",
       showModal: false,
       modalName: "",
       addedFood: "",
@@ -208,6 +209,7 @@ export default class Fridge extends Component {
   async getFoods() {
     const uid = await auth().currentUser.uid;
     var groupName = "";
+    var user = "";
     var members = [];
     const groups = await db
       .ref("/groups")
@@ -221,11 +223,13 @@ export default class Fridge extends Component {
           if (found) {
             groupName = key;
             members = groups[key].members;
+            user = found.name;
+            console.log(user);
           }
         }
       });
 
-    this.setState({ members: members, groupName: groupName });
+    this.setState({ members: members, groupName: groupName, userName: user });
   }
 
   renderModal() {
@@ -363,8 +367,8 @@ body {
 }
 `}</style>
         <div>
-          <Header />
-          <h1 class="fridgeTitle">Fridge</h1>
+          <Header username={this.state.userName} />
+          <h1 class="fridgeTitle">{this.state.groupName}'s Fridge</h1>
           <br></br>
           <Accordion>{this.createUIForGroup()}</Accordion>
           <hr></hr>

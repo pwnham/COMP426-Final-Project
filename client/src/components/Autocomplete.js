@@ -102,7 +102,7 @@ export class Autocomplete extends Component {
 `}</style>
         <React.Fragment>
           <label class="form-label" for="groupName">
-            Enter the name of the group you would like to join! autocomplete
+            Enter the name of the group you would like to join!
           </label>
           <input
             disabled={this.props.disabled}

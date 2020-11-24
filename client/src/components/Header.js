@@ -80,7 +80,7 @@ export class Header extends Component {
               <ul>
                 <li>
                   <button id="drop1" class="btn btn-primary">
-                    username
+                    {this.props.username}
                   </button>
                   <ul>
                     <li>
