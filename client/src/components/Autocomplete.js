@@ -109,6 +109,7 @@ export class Autocomplete extends Component {
             type="text"
             id="groupName"
             placeholder="Enter Group Name"
+            autocomplete="off"
             class="form-control"
             onChange={onChange}
             onKeyDown={onKeyDown}

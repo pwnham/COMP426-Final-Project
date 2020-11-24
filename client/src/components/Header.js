@@ -84,11 +84,6 @@ export class Header extends Component {
                   </button>
                   <ul>
                     <li>
-                      <button id="drop2" class="btn btn-primary">
-                        user info
-                      </button>
-                    </li>
-                    <li>
                       <button
                         onClick={this.signOutUser}
                         id="drop3"
