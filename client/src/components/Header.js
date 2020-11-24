@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { signout } from "../helpers/auth";
+import fridgeHead from "../fridgeHead.png";
 import "react-dropdown/style.css";
 
 export class Header extends Component {
@@ -65,6 +66,7 @@ export class Header extends Component {
 `}</style>
         <div className="header">
           <div className="logo">
+            <img src={fridgeHead} alt="fridge icon" height="45px"/>
             <h1>FridgeShare</h1>
           </div>
 

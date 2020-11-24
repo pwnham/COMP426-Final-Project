@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Jumbotron, Button } from "react-bootstrap";
+import fridge from "../fridgeIcon.png";
+import fridgeHead from "../fridgeHead.png";
 
 export default class Home extends Component {
   render() {
@@ -75,12 +77,26 @@ body {
   margin-right: 8px;
 }
 
+.icon {
+  display: flex;
+  justify-content: center;
+  margin-top: 45px;
+}
+
+.credit {
+  margin-left: 325px;
+  font-size: 12px;
+}
+
+
+
 
          `}</style>
         <div class="darkcolor">
           <Jumbotron>
             <div class="size size2">
               <div class="left inline">
+                <img src={fridgeHead} alt="fridge" height="60px"/>
                 <h1 class>FridgeShare</h1>
               </div>
               <div class="buttongroup inline">
@@ -108,8 +124,14 @@ body {
                   in seconds!
                 </p>
               </div>
+              <div className="icon">
+                <img src={fridge} alt="fridge with face .o." height="250px"/>
+              </div>
             </div>
           </Jumbotron>
+        </div>
+        <div className="credit">
+        Icons made by <a href="http://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
         </div>
       </>
     );
